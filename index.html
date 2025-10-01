@@ -1,0 +1,1992 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect Organization</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Authentication Screen -->
+    <div class="auth-container" id="authContainer">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <i class="fas fa-network-wired"></i>
+                    <span>Connect Org</span>
+                </div>
+                <h1 class="auth-title">Bienvenido</h1>
+                <p class="auth-subtitle">Inicia sesión para continuar</p>
+            </div>
+
+            <div class="auth-tabs">
+                <div class="auth-tab active" data-tab="login">Iniciar Sesión</div>
+                <div class="auth-tab" data-tab="register">Registrarse</div>
+            </div>
+
+            <!-- Login Form -->
+            <form class="auth-form active" id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">Correo Electrónico</label>
+                    <input type="email" class="form-control" placeholder="correo@ejemplo.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" placeholder="••••••••" required>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn">Iniciar Sesión</button>
+                </div>
+            </form>
+
+            <!-- Register Form -->
+            <form class="auth-form" id="registerForm">
+                <div class="form-group">
+                    <label class="form-label">Nombre Completo</label>
+                    <input type="text" class="form-control" placeholder="Juan Pérez" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Correo Electrónico</label>
+                    <input type="email" class="form-control" placeholder="correo@ejemplo.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" placeholder="••••••••" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Confirmar Contraseña</label>
+                    <input type="password" class="form-control" placeholder="••••••••" required>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn">Registrarse</button>
+                </div>
+            </form>
+
+            <div class="auth-divider">
+                <span>O continúa con</span>
+            </div>
+
+            <div class="social-login">
+                <button class="social-btn google">
+                    <i class="fab fa-google"></i>
+                    Google
+                </button>
+
+                <button class="social-btn apple">
+                    <i class="fab fa-apple"></i>
+                    Apple
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div class="app-container" id="appContainer">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-network-wired"></i>
+                <span>Connect Org</span>
+            </div>
+
+            <div class="user-profile" id="userProfile">
+                <div class="user-avatar" id="userAvatar">
+                    <span id="avatarInitials">CL</span>
+                    <div class="avatar-upload" id="avatarUpload">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                </div>
+                <div class="user-info">
+                    <div class="user-name" id="userName">César López</div>
+                    <div class="user-code" id="userCode">USR-CL-9834</div>
+                </div>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+
+            <div class="user-menu" id="userMenu" style="display: none;">
+                <div class="user-menu-item" id="profileMenuItem">Mi Perfil</div>
+                <div class="user-menu-item" id="settingsMenuItem">Configuración</div>
+            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a class="nav-link active" data-page="dashboard">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-page="tasks">
+                        <i class="fas fa-tasks"></i>
+                        <span>Gestión de Tareas</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-page="calendar">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Calendario</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-page="charts">
+                        <i class="fas fa-chart-pie"></i>
+                        <span>Gráficas</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-page="finance">
+                        <i class="fas fa-wallet"></i>
+                        <span>Gestión de Finanzas</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-page="projects">
+                        <i class="fas fa-project-diagram"></i>
+                        <span>Proyectos</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-page="reports">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reportes</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-page="users">
+                        <i class="fas fa-users"></i>
+                        <span>Gestión de Usuarios</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-page="notes">
+                        <i class="fas fa-sticky-note"></i>
+                        <span>Notas Rápidas</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-page="settings">
+                        <i class="fas fa-cog"></i>
+                        <span>Configuración</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Cerrar Sesión</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Page -->
+            <div id="dashboard" class="page-content">
+                <div class="header">
+                    <h1 class="page-title">Dashboard</h1>
+                    <div class="header-actions">
+                        <div class="search-container">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" class="search-input" placeholder="Buscar..." id="dashboardSearch">
+                        </div>
+                        <button class="btn btn-icon" id="darkModeToggle">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="card fade-in">
+                        <div class="card-header">
+                            <h3 class="card-title">Tareas Urgentes Hoy</h3>
+                            <div class="card-icon" style="background-color: var(--primary);">
+                                <i class="fas fa-exclamation-circle"></i>
+                            </div>
+                        </div>
+                        <div class="card-value" id="urgentTasksCount">3</div>
+                        <div class="card-text">Todas de alta prioridad</div>
+                    </div>
+
+                    <div class="card fade-in" style="animation-delay: 0.1s;">
+                        <div class="card-header">
+                            <h3 class="card-title">Avance Semanal</h3>
+                            <div class="card-icon" style="background-color: var(--success);">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                        </div>
+                        <div class="card-value">78%</div>
+                        <div class="card-text">+12% que la semana pasada</div>
+                    </div>
+
+                    <div class="card fade-in" style="animation-delay: 0.2s;">
+                        <div class="card-header">
+                            <h3 class="card-title">Balance Financiero</h3>
+                            <div class="card-icon" style="background-color: var(--secondary);">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                        </div>
+                        <div class="card-value" id="dashboardBalance">$2,450</div>
+                        <div class="card-text">Ingresos: $3,200 | Gastos: $750</div>
+                    </div>
+                </div>
+
+                <div class="tasks-container">
+                    <div class="tasks-header">
+                        <h2 class="card-title">Tareas de Alta Prioridad</h2>
+                        <div class="priority-filter">
+                            <button class="filter-btn active" data-filter="all">Todas</button>
+                            <button class="filter-btn" data-filter="high">Alta</button>
+                            <button class="filter-btn" data-filter="medium">Media</button>
+                            <button class="filter-btn" data-filter="low">Baja</button>
+                        </div>
+                    </div>
+
+                    <div class="task-list" id="highPriorityTasks">
+                        <div class="task-item high-priority" data-task-id="1">
+                            <div class="task-checkbox"></div>
+                            <div class="task-content">
+                                <div class="task-title">
+                                    Preparar presentación para cliente
+                                    <i class="fas fa-exclamation-circle alert-icon"></i>
+                                </div>
+                                <div class="task-description">Revisar todos los datos y preparar slides</div>
+                                <div class="task-dates">Hoy</div>
+                            </div>
+                            <div class="task-priority priority-high">Alta</div>
+                            <div class="task-category">Trabajo</div>
+                            <div class="task-actions">
+                                <button class="task-action-btn edit" data-task-id="1">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="task-action-btn delete" data-task-id="1">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="task-item high-priority" data-task-id="2">
+                            <div class="task-checkbox"></div>
+                            <div class="task-content">
+                                <div class="task-title">
+                                    Revisión de presupuesto
+                                    <i class="fas fa-exclamation-circle alert-icon"></i>
+                                </div>
+                                <div class="task-description">Analizar gastos del último trimestre</div>
+                                <div class="task-dates">Hoy</div>
+                            </div>
+                            <div class="task-priority priority-high">Alta</div>
+                            <div class="task-category">Trabajo</div>
+                            <div class="task-actions">
+                                <button class="task-action-btn edit" data-task-id="2">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="task-action-btn delete" data-task-id="2">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="task-item high-priority" data-task-id="3">
+                            <div class="task-checkbox"></div>
+                            <div class="task-content">
+                                <div class="task-title">
+                                    Entregar informe final
+                                    <i class="fas fa-exclamation-circle alert-icon"></i>
+                                </div>
+                                <div class="task-description">Subir informe a plataforma universitaria</div>
+                                <div class="task-dates">Hoy</div>
+                            </div>
+                            <div class="task-priority priority-high">Alta</div>
+                            <div class="task-category">Estudio</div>
+                            <div class="task-actions">
+                                <button class="task-action-btn edit" data-task-id="3">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="task-action-btn delete" data-task-id="3">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Notas Ancladas</h3>
+                    </div>
+                    <div class="notes-grid" style="grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));">
+                        <div class="note pinned" data-note-id="1">
+                            <div class="note-category">Trabajo</div>
+                            <i class="fas fa-thumbtack note-pin pinned"></i>
+                            <div class="note-title">Reunión importante</div>
+                            <div class="note-content">Preparar documentación para la reunión con inversores el viernes.</div>
+                            <div class="note-date">16/05/2023</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 20px;">
+                    <div class="card-header">
+                        <h3 class="card-title">Logros</h3>
+                    </div>
+                    <div class="badges-container">
+                        <div class="badge">
+                            <i class="fas fa-trophy badge-icon"></i>
+                            <div class="badge-title">Campeón Semanal</div>
+                            <div class="badge-description">Completaste todas tus tareas esta semana</div>
+                        </div>
+                        <div class="badge">
+                            <i class="fas fa-star badge-icon"></i>
+                            <div class="badge-title">Organizador Experto</div>
+                            <div class="badge-description">Creaste 10 categorías personalizadas</div>
+                        </div>
+                        <div class="badge">
+                            <i class="fas fa-fire badge-icon"></i>
+                            <div class="badge-title">Racha de 7 días</div>
+                            <div class="badge-description">Completaste tareas diarias por una semana</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tasks Page -->
+            <div id="tasks" class="page-content" style="display: none;">
+                <div class="header">
+                    <h1 class="page-title">Gestión de Tareas</h1>
+                    <div class="header-actions">
+                        <button class="btn" id="newTaskBtn">
+                            <i class="fas fa-plus"></i>
+                            Nueva Tarea
+                        </button>
+                    </div>
+                </div>
+
+                <div class="task-form" id="taskForm">
+                    <h3 class="card-title">Nueva Tarea</h3>
+                    <div class="form-group">
+                        <label class="form-label">Título</label>
+                        <input type="text" class="form-control" id="taskTitle" placeholder="Título de la tarea">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Descripción</label>
+                        <textarea class="form-control" id="taskDescription" rows="3" placeholder="Breve descripción"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Categoría</label>
+                        <select class="form-control" id="taskCategory">
+                            <option value="work">Trabajo</option>
+                            <option value="personal">Personal</option>
+                            <option value="health">Salud</option>
+                            <option value="study">Estudio</option>
+                            <option value="other">Otros</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Fecha de Inicio</label>
+                            <input type="date" class="form-control" id="taskStartDate">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Fecha de Finalización</label>
+                            <input type="date" class="form-control" id="taskEndDate">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Prioridad</label>
+                        <select class="form-control" id="taskPriority">
+                            <option value="high">Alta</option>
+                            <option value="medium">Media</option>
+                            <option value="low">Baja</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn" id="saveTaskBtn">Guardar Tarea</button>
+                        <button class="btn" id="cancelTaskBtn" style="background-color: var(--gray-light); color: var(--dark);">Cancelar</button>
+                    </div>
+                </div>
+
+                <!-- Edit Task Form -->
+                <div class="edit-form" id="editTaskForm">
+                    <h3 class="card-title">Editar Tarea</h3>
+                    <div class="form-group">
+                        <label class="form-label">Título</label>
+                        <input type="text" class="form-control" id="editTaskTitle" placeholder="Título de la tarea">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Descripción</label>
+                        <textarea class="form-control" id="editTaskDescription" rows="3" placeholder="Breve descripción"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Categoría</label>
+                        <select class="form-control" id="editTaskCategory">
+                            <option value="work">Trabajo</option>
+                            <option value="personal">Personal</option>
+                            <option value="health">Salud</option>
+                            <option value="study">Estudio</option>
+                            <option value="other">Otros</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Fecha de Inicio</label>
+                            <input type="date" class="form-control" id="editTaskStartDate">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Fecha de Finalización</label>
+                            <input type="date" class="form-control" id="editTaskEndDate">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Prioridad</label>
+                        <select class="form-control" id="editTaskPriority">
+                            <option value="high">Alta</option>
+                            <option value="medium">Media</option>
+                            <option value="low">Baja</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn" id="updateTaskBtn">Actualizar Tarea</button>
+                        <button class="btn" id="cancelEditTaskBtn" style="background-color: var(--gray-light); color: var(--dark);">Cancelar</button>
+                    </div>
+                </div>
+
+                <div class="task-subsections">
+                    <div class="subsection-card active" data-subsection="general">
+                        <div class="subsection-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <div class="subsection-title">Tareas Generales</div>
+                    </div>
+
+                    <div class="subsection-card" data-subsection="daily">
+                        <div class="subsection-icon">
+                            <i class="fas fa-calendar-day"></i>
+                        </div>
+                        <div class="subsection-title">Tareas Diarias</div>
+                    </div>
+
+                    <div class="subsection-card" data-subsection="category">
+                        <div class="subsection-icon">
+                            <i class="fas fa-folder"></i>
+                        </div>
+                        <div class="subsection-title">Tareas por Categoría</div>
+                    </div>
+
+                    <div class="subsection-card" data-subsection="completed">
+                        <div class="subsection-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="subsection-title">Tareas Finalizadas</div>
+                    </div>
+
+                    <div class="subsection-card" data-subsection="pending">
+                        <div class="subsection-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="subsection-title">Pendientes</div>
+                    </div>
+                </div>
+
+                <!-- Tareas Generales -->
+                <div id="generalTasks" class="tasks-container subsection-content">
+                    <div class="tasks-header">
+                        <h2 class="card-title">Todas las Tareas</h2>
+                    </div>
+
+                    <div class="priority-filter">
+                        <button class="filter-btn active" data-filter="all">Todo</button>
+                        <button class="filter-btn" data-filter="high">Alta</button>
+                        <button class="filter-btn" data-filter="medium">Media</button>
+                        <button class="filter-btn" data-filter="low">Baja</button>
+                    </div>
+
+                    <div class="task-list" id="taskList">
+                        <div class="task-item" data-priority="high" data-task-id="4">
+                            <div class="task-checkbox"></div>
+                            <div class="task-content">
+                                <div class="task-title">Reunión con equipo de diseño</div>
+                                <div class="task-description">Discutir nuevos prototipos</div>
+                                <div class="task-dates">Inicio: 17/05/2023 | Fin: 17/05/2023</div>
+                            </div>
+                            <div class="task-priority priority-high">Alta</div>
+                            <div class="task-category">Trabajo</div>
+                            <div class="task-actions">
+                                <button class="task-action-btn edit" data-task-id="4">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="task-action-btn delete" data-task-id="4">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="task-item" data-priority="medium" data-task-id="5">
+                            <div class="task-checkbox"></div>
+                            <div class="task-content">
+                                <div class="task-title">Enviar reporte semanal</div>
+                                <div class="task-description">Recopilar datos de todos los departamentos</div>
+                                <div class="task-dates">Inicio: 17/05/2023 | Fin: 19/05/2023</div>
+                            </div>
+                            <div class="task-priority priority-medium">Media</div>
+                            <div class="task-category">Trabajo</div>
+                            <div class="task-actions">
+                                <button class="task-action-btn edit" data-task-id="5">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="task-action-btn delete" data-task-id="5">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="task-item" data-priority="low" data-task-id="6">
+                            <div class="task-checkbox"></div>
+                            <div class="task-content">
+                                <div class="task-title">Comprar suministros de oficina</div>
+                                <div class="task-description">Papel, bolígrafos, carpetas</div>
+                                <div class="task-dates">Inicio: 18/05/2023 | Fin: 18/05/2023</div>
+                            </div>
+                            <div class="task-priority priority-low">Baja</div>
+                            <div class="task-category">Trabajo</div>
+                            <div class="task-actions">
+                                <button class="task-action-btn edit" data-task-id="6">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="task-action-btn delete" data-task-id="6">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="task-item" data-priority="medium" data-task-id="7">
+                            <div class="task-checkbox"></div>
+                            <div class="task-content">
+                                <div class="task-title">Ir al gimnasio</div>
+                                <div class="task-description">Rutina de cardio y pesas</div>
+                                <div class="task-dates">Inicio: 17/05/2023 | Fin: 17/05/2023</div>
+                            </div>
+                            <div class="task-priority priority-medium">Media</div>
+                            <div class="task-category">Salud</div>
+                            <div class="task-actions">
+                                <button class="task-action-btn edit" data-task-id="7">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="task-action-btn delete" data-task-id="7">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="task-item" data-priority="high" data-task-id="8">
+                            <div class="task-checkbox"></div>
+                            <div class="task-content">
+                                <div class="task-title">Estudiar para examen</div>
+                                <div class="task-description">Repasar capítulos 5 y 6</div>
+                                <div class="task-dates">Inicio: 18/05/2023 | Fin: 20/05/2023</div>
+                            </div>
+                            <div class="task-priority priority-high">Alta</div>
+                            <div class="task-category">Estudio</div>
+                            <div class="task-actions">
+                                <button class="task-action-btn edit" data-task-id="8">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="task-action-btn delete" data-task-id="8">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="task-item" data-priority="medium" data-task-id="9">
+                            <div class="task-checkbox"></div>
+                            <div class="task-content">
+                                <div class="task-title">Cena con mi madre</div>
+                                <div class="task-description">Celebrar su cumpleaños</div>
+                                <div class="task-dates">Inicio: 29/11/2025 | Fin: 30/11/2025</div>
+                            </div>
+                            <div class="task-priority priority-medium">Media</div>
+                            <div class="task-category">Personal</div>
+                            <div class="task-actions">
+                                <button class="task-action-btn edit" data-task-id="9">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="task-action-btn delete" data-task-id="9">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tareas Diarias -->
+                <div id="dailyTasks" class="tasks-container subsection-content" style="display: none;">
+                    <div class="tasks-header">
+                        <h2 class="card-title">Tareas para Hoy (<span id="todayDate"></span>)</h2>
+                    </div>
+
+                    <div class="task-list" id="dailyTaskList">
+                        <div class="task-item" data-priority="high" data-task-id="4">
+                            <div class="task-checkbox"></div>
+                            <div class="task-content">
+                                <div class="task-title">Reunión con equipo de diseño</div>
+                                <div class="task-description">Discutir nuevos prototipos</div>
+                                <div class="task-dates">Hoy</div>
+                            </div>
+                            <div class="task-priority priority-high">Alta</div>
+                            <div class="task-category">Trabajo</div>
+                            <div class="task-actions">
+                                <button class="task-action-btn edit" data-task-id="4">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="task-action-btn delete" data-task-id="4">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="task-item" data-priority="medium" data-task-id="7">
+                            <div class="task-checkbox"></div>
+                            <div class="task-content">
+                                <div class="task-title">Ir al gimnasio</div>
+                                <div class="task-description">Rutina de cardio y pesas</div>
+                                <div class="task-dates">Hoy</div>
+                            </div>
+                            <div class="task-priority priority-medium">Media</div>
+                            <div class="task-category">Salud</div>
+                            <div class="task-actions">
+                                <button class="task-action-btn edit" data-task-id="7">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="task-action-btn delete" data-task-id="7">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="task-item" data-priority="low" data-task-id="10">
+                            <div class="task-checkbox"></div>
+                            <div class="task-content">
+                                <div class="task-title">Llamar a mamá</div>
+                                <div class="task-description">Felicitación por su cumpleaños</div>
+                                <div class="task-dates">Hoy</div>
+                            </div>
+                            <div class="task-priority priority-low">Baja</div>
+                            <div class="task-category">Personal</div>
+                            <div class="task-actions">
+                                <button class="task-action-btn edit" data-task-id="10">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="task-action-btn delete" data-task-id="10">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tareas por Categoría -->
+                <div id="categoryTasks" class="tasks-container subsection-content" style="display: none;">
+                    <div class="tasks-header">
+                        <h2 class="card-title">Tareas por Categoría</h2>
+                    </div>
+
+                    <div class="category-filter">
+                        <button class="filter-btn active" data-category="work">Trabajo</button>
+                        <button class="filter-btn" data-category="personal">Personal</button>
+                        <button class="filter-btn" data-category="health">Salud</button>
+                        <button class="filter-btn" data-category="study">Estudio</button>
+                        <button class="filter-btn" data-category="other">Otros</button>
+                    </div>
+
+                    <div class="task-list" id="categoryTaskList">
+                        <!-- Tasks will be populated by JavaScript based on selected category -->
+                    </div>
+                </div>
+
+                <!-- Tareas Finalizadas -->
+                <div id="completedTasks" class="tasks-container subsection-content" style="display: none;">
+                    <div class="tasks-header">
+                        <h2 class="card-title">Tareas Finalizadas</h2>
+                    </div>
+
+                    <div class="priority-filter">
+                        <button class="filter-btn active" data-filter="all">Todas</button>
+                        <button class="filter-btn" data-filter="high">Alta</button>
+                        <button class="filter-btn" data-filter="medium">Media</button>
+                        <button class="filter-btn" data-filter="low">Baja</button>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Ordenar por:</label>
+                        <select class="form-control" id="sortCompletedTasks" style="width: 200px;">
+                            <option value="date">Fecha de finalización</option>
+                            <option value="priority">Prioridad</option>
+                            <option value="category">Categoría</option>
+                        </select>
+                    </div>
+
+                    <div class="task-list" id="completedTaskList">
+                        <div class="task-item" data-priority="high">
+                            <div class="task-checkbox checked"></div>
+                            <div class="task-content">
+                                <div class="task-title">Preparar presentación para cliente</div>
+                                <div class="task-description">Revisar todos los datos y preparar slides</div>
+                                <div class="task-dates">Completada: 15/05/2023</div>
+                            </div>
+                            <div class="task-priority priority-high">Alta</div>
+                            <div class="task-category">Trabajo</div>
+                        </div>
+
+                        <div class="task-item" data-priority="medium">
+                            <div class="task-checkbox checked"></div>
+                            <div class="task-content">
+                                <div class="task-title">Actualizar documentación</div>
+                                <div class="task-description">Revisar y actualizar manuales de usuario</div>
+                                <div class="task-dates">Completada: 14/05/2023</div>
+                            </div>
+                            <div class="task-priority priority-medium">Media</div>
+                            <div class="task-category">Trabajo</div>
+                        </div>
+
+                        <div class="task-item" data-priority="low">
+                            <div class="task-checkbox checked"></div>
+                            <div class="task-content">
+                                <div class="task-title">Comprar groceries</div>
+                                <div class="task-description">Lista de compras semanal</div>
+                                <div class="task-dates">Completada: 13/05/2023</div>
+                            </div>
+                            <div class="task-priority priority-low">Baja</div>
+                            <div class="task-category">Personal</div>
+                        </div>
+
+                        <div class="task-item" data-priority="high">
+                            <div class="task-checkbox checked"></div>
+                            <div class="task-content">
+                                <div class="task-title">Entregar proyecto final</div>
+                                <div class="task-description">Subir proyecto a plataforma universitaria</div>
+                                <div class="task-dates">Completada: 12/05/2023</div>
+                            </div>
+                            <div class="task-priority priority-high">Alta</div>
+                            <div class="task-category">Estudio</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tareas Pendientes -->
+                <div id="pendingTasks" class="tasks-container subsection-content" style="display: none;">
+                    <div class="tasks-header">
+                        <h2 class="card-title">Tareas Pendientes</h2>
+                    </div>
+
+                    <div class="priority-filter">
+                        <button class="filter-btn active" data-filter="all">Todo</button>
+                        <button class="filter-btn" data-filter="high">Alta</button>
+                        <button class="filter-btn" data-filter="medium">Media</button>
+                        <button class="filter-btn" data-filter="low">Baja</button>
+                    </div>
+
+                    <div class="task-list" id="pendingTaskList">
+                        <div class="task-item" data-priority="high" data-task-id="4">
+                            <div class="task-checkbox"></div>
+                            <div class="task-content">
+                                <div class="task-title">Reunión con equipo de diseño</div>
+                                <div class="task-description">Discutir nuevos prototipos</div>
+                                <div class="task-dates">Inicio: 17/05/2023 | Fin: 17/05/2023</div>
+                            </div>
+                            <div class="task-priority priority-high">Alta</div>
+                            <div class="task-category">Trabajo</div>
+                            <div class="task-actions">
+                                <button class="task-action-btn edit" data-task-id="4">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="task-action-btn delete" data-task-id="4">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="task-item" data-priority="medium" data-task-id="5">
+                            <div class="task-checkbox"></div>
+                            <div class="task-content">
+                                <div class="task-title">Enviar reporte semanal</div>
+                                <div class="task-description">Recopilar datos de todos los departamentos</div>
+                                <div class="task-dates">Inicio: 17/05/2023 | Fin: 19/05/2023</div>
+                            </div>
+                            <div class="task-priority priority-medium">Media</div>
+                            <div class="task-category">Trabajo</div>
+                            <div class="task-actions">
+                                <button class="task-action-btn edit" data-task-id="5">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="task-action-btn delete" data-task-id="5">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="task-item" data-priority="low" data-task-id="6">
+                            <div class="task-checkbox"></div>
+                            <div class="task-content">
+                                <div class="task-title">Comprar suministros de oficina</div>
+                                <div class="task-description">Papel, bolígrafos, carpetas</div>
+                                <div class="task-dates">Inicio: 18/05/2023 | Fin: 18/05/2023</div>
+                            </div>
+                            <div class="task-priority priority-low">Baja</div>
+                            <div class="task-category">Trabajo</div>
+                            <div class="task-actions">
+                                <button class="task-action-btn edit" data-task-id="6">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="task-action-btn delete" data-task-id="6">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calendar Page -->
+            <div id="calendar" class="page-content" style="display: none;">
+                <div class="header">
+                    <h1 class="page-title">Calendario</h1>
+                </div>
+
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <h2 class="card-title">Calendario Dinámico</h2>
+                        <div class="calendar-nav">
+                            <button class="calendar-btn" id="prevYear"><i class="fas fa-angle-double-left"></i></button>
+                            <button class="calendar-btn" id="prevMonth"><i class="fas fa-chevron-left"></i></button>
+
+                            <select class="calendar-select" id="yearSelect">
+                                <!-- Years will be populated by JavaScript -->
+                            </select>
+
+                            <select class="calendar-select" id="monthSelect">
+                                <option value="0">Enero</option>
+                                <option value="1">Febrero</option>
+                                <option value="2">Marzo</option>
+                                <option value="3">Abril</option>
+                                <option value="4">Mayo</option>
+                                <option value="5">Junio</option>
+                                <option value="6">Julio</option>
+                                <option value="7">Agosto</option>
+                                <option value="8">Septiembre</option>
+                                <option value="9">Octubre</option>
+                                <option value="10">Noviembre</option>
+                                <option value="11">Diciembre</option>
+                            </select>
+
+                            <button class="calendar-btn" id="nextMonth"><i class="fas fa-chevron-right"></i></button>
+                            <button class="calendar-btn" id="nextYear"><i class="fas fa-angle-double-right"></i></button>
+
+                            <div class="calendar-view-toggle">
+                                <button class="view-btn active" data-view="month">Mes</button>
+                                <button class="view-btn" data-view="week">Semana</button>
+                                <button class="view-btn" data-view="day">Día</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="calendarView">
+                        <!-- Calendar will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Page -->
+            <div id="charts" class="page-content" style="display: none;">
+                <div class="header">
+                    <h1 class="page-title">Gráficas</h1>
+                    <div class="header-actions">
+                        <button class="btn" id="refreshChartsBtn">
+                            <i class="fas fa-sync-alt"></i>
+                            Actualizar
+                        </button>
+                    </div>
+                </div>
+
+                <div class="charts-container">
+                    <div class="chart-card">
+                        <h3 class="card-title">Tareas Completadas vs. Pendientes</h3>
+                        <canvas id="tasksChart" width="400" height="300"></canvas>
+                    </div>
+
+                    <div class="chart-card">
+                        <h3 class="card-title">Distribución por Prioridades</h3>
+                        <canvas id="priorityChart" width="400" height="300"></canvas>
+                    </div>
+                </div>
+
+                <div class="charts-container">
+                    <div class="chart-card">
+                        <h3 class="card-title">Tareas Completadas Diarias</h3>
+                        <canvas id="dailyTasksChart" width="400" height="300"></canvas>
+                    </div>
+
+                    <div class="chart-card">
+                        <h3 class="card-title">Tareas Completadas Mensuales</h3>
+                        <canvas id="monthlyTasksChart" width="400" height="300"></canvas>
+                    </div>
+                </div>
+
+                <div class="charts-container">
+                    <div class="chart-card">
+                        <h3 class="card-title">Rendimiento por Categoría</h3>
+                        <canvas id="categoryPerformanceChart" width="400" height="300"></canvas>
+                    </div>
+
+                    <div class="chart-card">
+                        <h3 class="card-title">Productividad por Semana</h3>
+                        <canvas id="productivityChart" width="400" height="300"></canvas>
+                    </div>
+                </div>
+
+                <div class="feedback-message feedback-success">
+                    <i class="fas fa-check-circle"></i> ¡Genial! Cumpliste el 80% de tus tareas esta semana.
+                </div>
+            </div>
+
+            <!-- Finance Page -->
+            <div id="finance" class="page-content" style="display: none;">
+                <div class="header">
+                    <h1 class="page-title">Gestión de Finanzas</h1>
+                    <div class="header-actions">
+                        <button class="btn" id="newTransactionBtn">
+                            <i class="fas fa-plus"></i>
+                            Nueva Transacción
+                        </button>
+                        <div class="export-options">
+                            <button class="export-btn" id="exportFinanceExcelBtn">
+                                <i class="fas fa-file-excel"></i>
+                                Exportar a Excel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="finance-container">
+                    <div class="finance-summary">
+                        <div class="summary-item">
+                            <div class="summary-value income" id="totalIncome">$3,200</div>
+                            <div>Ingresos</div>
+                        </div>
+
+                        <div class="summary-item">
+                            <div class="summary-value expense" id="totalExpense">$750</div>
+                            <div>Gastos</div>
+                        </div>
+
+                        <div class="summary-item">
+                            <div class="summary-value" id="totalBalance" style="color: var(--success);">$2,450</div>
+                            <div>Balance</div>
+                        </div>
+                    </div>
+
+                    <h3 class="card-title">Transacciones Recientes</h3>
+
+                    <div class="transaction-cards" id="transactionCards">
+                        <div class="transaction-card income" data-transaction-id="1">
+                            <div class="transaction-header">
+                                <div class="transaction-title">Salario</div>
+                                <div class="transaction-amount income">+$3,200</div>
+                            </div>
+                            <div class="transaction-details">
+                                <div>Trabajo</div>
+                                <div>01/05/2023</div>
+                            </div>
+                            <div class="transaction-actions">
+                                <button class="transaction-action-btn edit" data-transaction-id="1">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="transaction-action-btn delete" data-transaction-id="1">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="transaction-card expense" data-transaction-id="2">
+                            <div class="transaction-header">
+                                <div class="transaction-title">Supermercado</div>
+                                <div class="transaction-amount expense">-$150</div>
+                            </div>
+                            <div class="transaction-details">
+                                <div>Alimentación</div>
+                                <div>03/05/2023</div>
+                            </div>
+                            <div class="transaction-actions">
+                                <button class="transaction-action-btn edit" data-transaction-id="2">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="transaction-action-btn delete" data-transaction-id="2">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="transaction-card expense" data-transaction-id="3">
+                            <div class="transaction-header">
+                                <div class="transaction-title">Transporte</div>
+                                <div class="transaction-amount expense">-$80</div>
+                            </div>
+                            <div class="transaction-details">
+                                <div>Transporte</div>
+                                <div>05/05/2023</div>
+                            </div>
+                            <div class="transaction-actions">
+                                <button class="transaction-action-btn edit" data-transaction-id="3">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="transaction-action-btn delete" data-transaction-id="3">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="transaction-card expense" data-transaction-id="4">
+                            <div class="transaction-header">
+                                <div class="transaction-title">Cine</div>
+                                <div class="transaction-amount expense">-$40</div>
+                            </div>
+                            <div class="transaction-details">
+                                <div>Entretenimiento</div>
+                                <div>07/05/2023</div>
+                            </div>
+                            <div class="transaction-actions">
+                                <button class="transaction-action-btn edit" data-transaction-id="4">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="transaction-action-btn delete" data-transaction-id="4">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="charts-container">
+                        <div class="chart-card">
+                            <h3 class="card-title">Ingresos vs. Gastos</h3>
+                            <canvas id="incomeExpenseChart" width="400" height="200"></canvas>
+                        </div>
+
+                        <div class="chart-card">
+                            <h3 class="card-title">Flujo Mensual</h3>
+                            <canvas id="cashFlowChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <h3 class="card-title">Distribución de Gastos</h3>
+                        <canvas id="expenseDistributionChart" width="400" height="200"></canvas>
+                    </div>
+
+                    <div class="feedback-message feedback-warning">
+                        <i class="fas fa-exclamation-triangle"></i> Has superado tu presupuesto en transporte.
+                    </div>
+
+                    <div class="feedback-message feedback-success">
+                        <i class="fas fa-piggy-bank"></i> Tus ahorros aumentaron un 20% este mes.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projects Page -->
+            <div id="projects" class="page-content" style="display: none;">
+                <div class="header">
+                    <h1 class="page-title">Proyectos</h1>
+                    <div class="header-actions">
+                        <button class="btn" id="newProjectBtn">
+                            <i class="fas fa-plus"></i>
+                            Nuevo Proyecto
+                        </button>
+                    </div>
+                </div>
+
+                <div class="projects-container">
+                    <div class="projects-grid" id="projectsGrid">
+                        <div class="project-card">
+                            <div class="project-header">
+                                <div class="project-title">Lanzamiento de Curso Online</div>
+                                <div class="project-status">En Progreso</div>
+                            </div>
+
+                            <div class="project-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 65%;"></div>
+                                </div>
+                                <div class="progress-text">
+                                    <span>65% Completado</span>
+                                    <span>13 de 20 tareas</span>
+                                </div>
+                            </div>
+
+                            <div class="project-tasks">
+                                <div class="project-task">
+                                    <div class="project-task-checkbox checked"></div>
+                                    <div class="project-task-title">Crear contenido del curso</div>
+                                    <div class="project-task-priority priority-high">Alta</div>
+                                </div>
+
+                                <div class="project-task">
+                                    <div class="project-task-checkbox checked"></div>
+                                    <div class="project-task-title">Grabar videos</div>
+                                    <div class="project-task-priority priority-high">Alta</div>
+                                </div>
+
+                                <div class="project-task">
+                                    <div class="project-task-checkbox"></div>
+                                    <div class="project-task-title">Diseñar página de ventas</div>
+                                    <div class="project-task-priority priority-medium">Media</div>
+                                </div>
+
+                                <div class="project-task">
+                                    <div class="project-task-checkbox"></div>
+                                    <div class="project-task-title">Configurar plataforma</div>
+                                    <div class="project-task-priority priority-medium">Media</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="project-card">
+                            <div class="project-header">
+                                <div class="project-title">Rediseño Web Corporativo</div>
+                                <div class="project-status">En Progreso</div>
+                            </div>
+
+                            <div class="project-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 40%;"></div>
+                                </div>
+                                <div class="progress-text">
+                                    <span>40% Completado</span>
+                                    <span>4 de 10 tareas</span>
+                                </div>
+                            </div>
+
+                            <div class="project-tasks">
+                                <div class="project-task">
+                                    <div class="project-task-checkbox checked"></div>
+                                    <div class="project-task-title">Investigación de UX</div>
+                                    <div class="project-task-priority priority-high">Alta</div>
+                                </div>
+
+                                <div class="project-task">
+                                    <div class="project-task-checkbox checked"></div>
+                                    <div class="project-task-title">Diseño de prototipos</div>
+                                    <div class="project-task-priority priority-high">Alta</div>
+                                </div>
+
+                                <div class="project-task">
+                                    <div class="project-task-checkbox"></div>
+                                    <div class="project-task-title">Desarrollo frontend</div>
+                                    <div class="project-task-priority priority-medium">Media</div>
+                                </div>
+
+                                <div class="project-task">
+                                    <div class="project-task-checkbox"></div>
+                                    <div class="project-task-title">Pruebas y optimización</div>
+                                    <div class="project-task-priority priority-low">Baja</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="project-card">
+                            <div class="project-header">
+                                <div class="project-title">Campaña de Marketing</div>
+                                <div class="project-status">Planificación</div>
+                            </div>
+
+                            <div class="project-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 20%;"></div>
+                                </div>
+                                <div class="progress-text">
+                                    <span>20% Completado</span>
+                                    <span>2 de 10 tareas</span>
+                                </div>
+                            </div>
+
+                            <div class="project-tasks">
+                                <div class="project-task">
+                                    <div class="project-task-checkbox checked"></div>
+                                    <div class="project-task-title">Definir objetivos</div>
+                                    <div class="project-task-priority priority-high">Alta</div>
+                                </div>
+
+                                <div class="project-task">
+                                    <div class="project-task-checkbox checked"></div>
+                                    <div class="project-task-title">Investigar mercado</div>
+                                    <div class="project-task-priority priority-high">Alta</div>
+                                </div>
+
+                                <div class="project-task">
+                                    <div class="project-task-checkbox"></div>
+                                    <div class="project-task-title">Crear contenido</div>
+                                    <div class="project-task-priority priority-medium">Media</div>
+                                </div>
+
+                                <div class="project-task">
+                                    <div class="project-task-checkbox"></div>
+                                    <div class="project-task-title">Lanzar campaña</div>
+                                    <div class="project-task-priority priority-medium">Media</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reports Page -->
+            <div id="reports" class="page-content" style="display: none;">
+                <div class="header">
+                    <h1 class="page-title">Reportes</h1>
+                    <div class="header-actions">
+                        <button class="btn" id="generateReportBtn">
+                            <i class="fas fa-file-alt"></i>
+                            Generar Reporte
+                        </button>
+                    </div>
+                </div>
+
+                <div class="reports-container">
+                    <div class="reports-grid">
+                        <div class="report-card">
+                            <div class="report-header">
+                                <div class="report-title">Reporte Semanal de Tareas</div>
+                                <div class="report-icon">
+                                    <i class="fas fa-tasks"></i>
+                                </div>
+                            </div>
+                            <div class="report-description">
+                                Resumen de tareas completadas y pendientes durante la semana actual.
+                            </div>
+                            <div class="report-actions">
+                                <button class="report-btn" id="weeklyTasksPdfBtn">Ver PDF</button>
+                                <button class="report-btn secondary" id="weeklyTasksExcelBtn">Descargar Excel</button>
+                            </div>
+                        </div>
+
+                        <div class="report-card">
+                            <div class="report-header">
+                                <div class="report-title">Reporte Mensual de Finanzas</div>
+                                <div class="report-icon">
+                                    <i class="fas fa-wallet"></i>
+                                </div>
+                            </div>
+                            <div class="report-description">
+                                Análisis detallado de ingresos, gastos y balance del mes actual.
+                            </div>
+                            <div class="report-actions">
+                                <button class="report-btn" id="monthlyFinancePdfBtn">Ver PDF</button>
+                                <button class="report-btn secondary" id="monthlyFinanceExcelBtn">Descargar Excel</button>
+                            </div>
+                        </div>
+
+                        <div class="report-card">
+                            <div class="report-header">
+                                <div class="report-title">Reporte de Productividad</div>
+                                <div class="report-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                            </div>
+                            <div class="report-description">
+                                Análisis de rendimiento y productividad por categorías y proyectos.
+                            </div>
+                            <div class="report-actions">
+                                <button class="report-btn" id="productivityPdfBtn">Ver PDF</button>
+                                <button class="report-btn secondary" id="productivityExcelBtn">Descargar Excel</button>
+                            </div>
+                        </div>
+
+                        <div class="report-card">
+                            <div class="report-header">
+                                <div class="report-title">Reporte de Proyectos</div>
+                                <div class="report-icon">
+                                    <i class="fas fa-project-diagram"></i>
+                                </div>
+                            </div>
+                            <div class="report-description">
+                                Estado actual de todos los proyectos con avance y próximos hitos.
+                            </div>
+                            <div class="report-actions">
+                                <button class="report-btn" id="projectsPdfBtn">Ver PDF</button>
+                                <button class="report-btn secondary" id="projectsExcelBtn">Descargar Excel</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin-top: 20px;">
+                        <div class="card-header">
+                            <h3 class="card-title">Reportes Automáticos</h3>
+                        </div>
+                        <div class="settings-item">
+                            <div>
+                                <div class="settings-label">Reporte semanal de tareas</div>
+                                <div class="settings-description">Recibir cada lunes un resumen de las tareas de la semana anterior</div>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="settings-item">
+                            <div>
+                                <div class="settings-label">Reporte mensual de finanzas</div>
+                                <div class="settings-description">Recibir el primer día de cada mes un resumen financiero</div>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="settings-item">
+                            <div>
+                                <div class="settings-label">Reporte de productividad</div>
+                                <div class="settings-description">Recibir un análisis mensual de tu productividad</div>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Page -->
+            <div id="users" class="page-content" style="display: none;">
+                <div class="header">
+                    <h1 class="page-title">Gestión de Usuarios</h1>
+                    <div class="header-actions">
+                        <button class="btn" id="inviteUserBtn">
+                            <i class="fas fa-user-plus"></i>
+                            Invitar Usuario
+                        </button>
+                    </div>
+                </div>
+
+                <div class="users-container">
+                    <div class="users-header">
+                        <h2 class="card-title">Usuarios del Sistema</h2>
+                    </div>
+
+                    <div class="users-grid" id="usersGrid">
+                        <div class="user-card">
+                            <div class="user-card-header">
+                                <div class="user-card-avatar">CL</div>
+                                <div class="user-card-info">
+                                    <div class="user-card-name">César López</div>
+                                    <div class="user-card-email">cesar@ejemplo.com</div>
+                                </div>
+                            </div>
+                            <div class="user-card-code">USR-CL-9834</div>
+                            <div class="user-card-permissions">
+                                <div class="permission-badge">Ver</div>
+                                <div class="permission-badge">Editar</div>
+                                <div class="permission-badge">Admin</div>
+                            </div>
+                            <div class="user-card-actions">
+                                <button class="user-card-btn">Editar</button>
+                                <button class="user-card-btn danger">Eliminar</button>
+                            </div>
+                        </div>
+
+                        <div class="user-card">
+                            <div class="user-card-header">
+                                <div class="user-card-avatar">MG</div>
+                                <div class="user-card-info">
+                                    <div class="user-card-name">María García</div>
+                                    <div class="user-card-email">maria@ejemplo.com</div>
+                                </div>
+                            </div>
+                            <div class="user-card-code">USR-MG-5621</div>
+                            <div class="user-card-permissions">
+                                <div class="permission-badge">Ver</div>
+                                <div class="permission-badge">Editar</div>
+                            </div>
+                            <div class="user-card-actions">
+                                <button class="user-card-btn">Editar</button>
+                                <button class="user-card-btn danger">Eliminar</button>
+                            </div>
+                        </div>
+
+                        <div class="user-card">
+                            <div class="user-card-header">
+                                <div class="user-card-avatar">JR</div>
+                                <div class="user-card-info">
+                                    <div class="user-card-name">Juan Rodríguez</div>
+                                    <div class="user-card-email">juan@ejemplo.com</div>
+                                </div>
+                            </div>
+                            <div class="user-card-code">USR-JR-7845</div>
+                            <div class="user-card-permissions">
+                                <div class="permission-badge">Ver</div>
+                            </div>
+                            <div class="user-card-actions">
+                                <button class="user-card-btn">Editar</button>
+                                <button class="user-card-btn danger">Eliminar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin-top: 20px;">
+                        <div class="card-header">
+                            <h3 class="card-title">Invitar Usuario</h3>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Código de Usuario</label>
+                            <input type="text" class="form-control" id="inviteUserCode" placeholder="Ingresa el código de usuario">
+                        </div>
+                        <div class="form-group">
+                            <button class="btn" id="sendInviteBtn">Invitar Usuario</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notes Page -->
+            <div id="notes" class="page-content" style="display: none;">
+                <div class="header">
+                    <h1 class="page-title">Notas Rápidas</h1>
+                    <div class="header-actions">
+                        <button class="btn" id="newNoteBtn">
+                            <i class="fas fa-plus"></i>
+                            Nueva Nota
+                        </button>
+                    </div>
+                </div>
+
+                <div class="notes-container">
+                    <div class="notes-grid" id="notesGrid">
+                        <div class="note" data-note-id="2">
+                            <div class="note-category">Trabajo</div>
+                            <i class="fas fa-thumbtack note-pin"></i>
+                            <div class="note-title">Ideas para el proyecto</div>
+                            <div class="note-content">Implementar sistema de notificaciones push para recordatorios de tareas.</div>
+                            <div class="note-date">17/05/2023</div>
+                        </div>
+
+                        <div class="note pinned" data-note-id="1">
+                            <div class="note-category">Trabajo</div>
+                            <i class="fas fa-thumbtack note-pin pinned"></i>
+                            <div class="note-title">Reunión importante</div>
+                            <div class="note-content">Preparar documentación para la reunión con inversores el viernes.</div>
+                            <div class="note-date">16/05/2023</div>
+                        </div>
+
+                        <div class="note" data-note-id="3">
+                            <div class="note-category">Personal</div>
+                            <i class="fas fa-thumbtack note-pin"></i>
+                            <div class="note-title">Compras</div>
+                            <div class="note-content">Comprar: café, papel, bolígrafos, cargador para el portátil.</div>
+                            <div class="note-date">15/05/2023</div>
+                        </div>
+
+                        <div class="note" data-note-id="4">
+                            <div class="note-category">Personal</div>
+                            <i class="fas fa-thumbtack note-pin"></i>
+                            <div class="note-title">Recordatorio</div>
+                            <div class="note-content">Renovar suscripción a herramientas de diseño antes del 30 de mayo.</div>
+                            <div class="note-date">14/05/2023</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Page -->
+            <div id="settings" class="page-content" style="display: none;">
+                <div class="header">
+                    <h1 class="page-title">Configuración</h1>
+                </div>
+
+                <div class="settings-section">
+                    <h3 class="settings-title">Preferencias</h3>
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Modo Oscuro</div>
+                            <div class="settings-description">Cambiar entre tema claro y oscuro</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="darkModeSwitch">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Notificaciones</div>
+                            <div class="settings-description">Recibir recordatorios de tareas</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Modo Colaborativo</div>
+                            <div class="settings-description">Permitir que otros usuarios editen</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3 class="settings-title">Tema Visual</h3>
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Color Principal</div>
+                            <div class="settings-description">Selecciona el color principal de la interfaz</div>
+                        </div>
+                        <div class="color-options">
+                            <button class="color-option" data-theme="default" style="background-color: var(--primary);"></button>
+                            <button class="color-option" data-theme="blue" style="background-color: #4A6FA5;"></button>
+                            <button class="color-option" data-theme="green" style="background-color: #4CAF50;"></button>
+                            <button class="color-option" data-theme="purple" style="background-color: #9C27B0;"></button>
+                            <button class="color-option" data-theme="red" style="background-color: #F44336;"></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3 class="settings-title">Gestión de Usuarios</h3>
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Invitar Usuario</div>
+                            <div class="settings-description">Añadir nuevos miembros al equipo</div>
+                        </div>
+                        <button class="btn">
+                            <i class="fas fa-user-plus"></i>
+                            Invitar
+                        </button>
+                    </div>
+
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Lista de Usuarios</div>
+                            <div class="settings-description">Ver y gestionar usuarios existentes</div>
+                        </div>
+                        <button class="btn">
+                            <i class="fas fa-users"></i>
+                            Ver
+                        </button>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3 class="settings-title">Personalización de Categorías</h3>
+                    <div class="category-list">
+                        <div class="category-item">
+                            <div class="category-color" style="background-color: var(--secondary);"></div>
+                            <div class="category-name">Trabajo</div>
+                            <i class="fas fa-times category-delete"></i>
+                        </div>
+                        <div class="category-item">
+                            <div class="category-color" style="background-color: var(--primary);"></div>
+                            <div class="category-name">Personal</div>
+                            <i class="fas fa-times category-delete"></i>
+                        </div>
+                        <div class="category-item">
+                            <div class="category-color" style="background-color: var(--success);"></div>
+                            <div class="category-name">Salud</div>
+                            <i class="fas fa-times category-delete"></i>
+                        </div>
+                        <div class="category-item">
+                            <div class="category-color" style="background-color: var(--warning);"></div>
+                            <div class="category-name">Estudio</div>
+                            <i class="fas fa-times category-delete"></i>
+                        </div>
+                    </div>
+
+                    <button class="btn" id="addCategoryBtn">
+                        <i class="fas fa-plus"></i>
+                        Nueva Categoría
+                    </button>
+                </div>
+
+                <div class="settings-section">
+                    <h3 class="settings-title">Integraciones</h3>
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Google Calendar</div>
+                            <div class="settings-description">Sincronizar eventos con tu calendario de Google</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Gmail</div>
+                            <div class="settings-description">Recibir recordatorios y notificaciones por correo</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Slack</div>
+                            <div class="settings-description">Enviar notificaciones a tu espacio de trabajo de Slack</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3 class="settings-title">Automatizaciones</h3>
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Recordatorios de tareas urgentes</div>
+                            <div class="settings-description">Enviar notificación si una tarea de alta prioridad no se completa</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Reporte semanal automático</div>
+                            <div class="settings-description">Generar y enviar reporte semanal cada lunes</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3 class="settings-title">Exportar Datos</h3>
+                    <div class="export-options">
+                        <button class="export-btn" id="exportTasksExcelBtn">
+                            <i class="fas fa-file-excel"></i>
+                            Exportar Tareas a Excel
+                        </button>
+                        <button class="export-btn" id="exportTasksPdfBtn">
+                            <i class="fas fa-file-pdf"></i>
+                            Exportar Tareas a PDF
+                        </button>
+                        <button class="export-btn" id="exportFinanceExcelBtn">
+                            <i class="fas fa-file-excel"></i>
+                            Exportar Finanzas a Excel
+                        </button>
+                        <button class="export-btn" id="exportFinancePdfBtn">
+                            <i class="fas fa-file-pdf"></i>
+                            Exportar Finanzas a PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <i class="fas fa-bell notification-icon"></i>
+        <span id="notificationText">Nueva tarea urgente agregada</span>
+        <i class="fas fa-times notification-close" id="notificationClose"></i>
+    </div>
+
+    <!-- Modal for Calendar Day Details -->
+    <div class="modal" id="calendarDayModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalDayTitle">Tareas del día</h3>
+                <i class="fas fa-times modal-close" id="modalClose"></i>
+            </div>
+            <div class="task-list" id="modalDayTasks">
+                <!-- Tasks will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for New Transaction -->
+    <div class="modal" id="transactionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Nueva Transacción</h3>
+                <i class="fas fa-times modal-close" id="transactionModalClose"></i>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Tipo</label>
+                <select class="form-control" id="transactionType">
+                    <option value="income">Ingreso</option>
+                    <option value="expense">Egreso</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Descripción</label>
+                <input type="text" class="form-control" id="transactionDescription" placeholder="Descripción">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Categoría</label>
+                <select class="form-control" id="transactionCategory">
+                    <option value="food">Alimentación</option>
+                    <option value="transport">Transporte</option>
+                    <option value="entertainment">Entretenimiento</option>
+                    <option value="health">Salud</option>
+                    <option value="education">Educación</option>
+                    <option value="investment">Inversión</option>
+                    <option value="other">Otros</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Monto</label>
+                <input type="number" class="form-control" id="transactionAmount" placeholder="0.00">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Fecha</label>
+                <input type="date" class="form-control" id="transactionDate">
+            </div>
+
+            <div class="form-group">
+                <button class="btn" id="saveTransactionBtn">Guardar Transacción</button>
+                <button class="btn" id="cancelTransactionBtn" style="background-color: var(--gray-light); color: var(--dark);">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Edit Transaction -->
+    <div class="modal" id="editTransactionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Editar Transacción</h3>
+                <i class="fas fa-times modal-close" id="editTransactionModalClose"></i>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Tipo</label>
+                <select class="form-control" id="editTransactionType">
+                    <option value="income">Ingreso</option>
+                    <option value="expense">Egreso</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Descripción</label>
+                <input type="text" class="form-control" id="editTransactionDescription" placeholder="Descripción">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Categoría</label>
+                <select class="form-control" id="editTransactionCategory">
+                    <option value="food">Alimentación</option>
+                    <option value="transport">Transporte</option>
+                    <option value="entertainment">Entretenimiento</option>
+                    <option value="health">Salud</option>
+                    <option value="education">Educación</option>
+                    <option value="investment">Inversión</option>
+                    <option value="other">Otros</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Monto</label>
+                <input type="number" class="form-control" id="editTransactionAmount" placeholder="0.00">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Fecha</label>
+                <input type="date" class="form-control" id="editTransactionDate">
+            </div>
+
+            <div class="form-group">
+                <button class="btn" id="updateTransactionBtn">Actualizar Transacción</button>
+                <button class="btn" id="cancelEditTransactionBtn" style="background-color: var(--gray-light); color: var(--dark);">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for New Note -->
+    <div class="modal" id="noteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Nueva Nota</h3>
+                <i class="fas fa-times modal-close" id="noteModalClose"></i>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Título</label>
+                <input type="text" class="form-control" id="noteTitle" placeholder="Título de la nota">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Contenido</label>
+                <textarea class="form-control" id="noteContent" rows="5" placeholder="Escribe aquí tu nota..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Categoría</label>
+                <select class="form-control" id="noteCategory">
+                    <option value="work">Trabajo</option>
+                    <option value="personal">Personal</option>
+                    <option value="health">Salud</option>
+                    <option value="study">Estudio</option>
+                    <option value="other">Otros</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">
+                    <input type="checkbox" id="notePinned"> Anclar nota
+                </label>
+            </div>
+
+            <div class="form-group">
+                <button class="btn" id="saveNoteBtn">Guardar Nota</button>
+                <button class="btn" id="cancelNoteBtn" style="background-color: var(--gray-light); color: var(--dark);">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Edit Note -->
+    <div class="modal" id="editNoteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Editar Nota</h3>
+                <i class="fas fa-times modal-close" id="editNoteModalClose"></i>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Título</label>
+                <input type="text" class="form-control" id="editNoteTitle" placeholder="Título de la nota">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Contenido</label>
+                <textarea class="form-control" id="editNoteContent" rows="5" placeholder="Escribe aquí tu nota..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Categoría</label>
+                <select class="form-control" id="editNoteCategory">
+                    <option value="work">Trabajo</option>
+                    <option value="personal">Personal</option>
+                    <option value="health">Salud</option>
+                    <option value="study">Estudio</option>
+                    <option value="other">Otros</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">
+                    <input type="checkbox" id="editNotePinned"> Anclar nota
+                </label>
+            </div>
+
+            <div class="form-group">
+                <button class="btn" id="updateNoteBtn">Actualizar Nota</button>
+                <button class="btn btn-danger" id="deleteNoteBtn">Eliminar Nota</button>
+                <button class="btn" id="cancelEditNoteBtn" style="background-color: var(--gray-light); color: var(--dark);">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for New Category -->
+    <div class="modal" id="categoryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Nueva Categoría</h3>
+                <i class="fas fa-times modal-close" id="categoryModalClose"></i>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Nombre de Categoría</label>
+                <input type="text" class="form-control" id="categoryName" placeholder="Nombre de la categoría">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Color</label>
+                <div class="color-options">
+                    <button class="color-option" data-color="#4A6FA5" style="background-color: #4A6FA5;"></button>
+                    <button class="color-option" data-color="#4CAF50" style="background-color: #4CAF50;"></button>
+                    <button class="color-option" data-color="#FFC107" style="background-color: #FFC107;"></button>
+                    <button class="color-option" data-color="#9C27B0" style="background-color: #9C27B0;"></button>
+                    <button class="color-option" data-color="#F44336" style="background-color: #F44336;"></button>
+                    <button class="color-option" data-color="#FF9800" style="background-color: #FF9800;"></button>
+                    <button class="color-option" data-color="#795548" style="background-color: #795548;"></button>
+                    <button class="color-option" data-color="#607D8B" style="background-color: #607D8B;"></button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button class="btn" id="saveCategoryBtn">Guardar Categoría</button>
+                <button class="btn" id="cancelCategoryBtn" style="background-color: var(--gray-light); color: var(--dark);">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Assistant -->
+    <div class="ai-assistant" id="ai-assistant" style="display: none;">
+        <div class="ai-assistant-header">
+            <h3 class="ai-assistant-title">Asistente de IA</h3>
+            <i class="fas fa-times ai-close-btn" id="ai-close-btn"></i>
+        </div>
+        <div class="ai-assistant-body">
+            <div class="ai-message-container">
+                <!-- Messages will be appended here -->
+            </div>
+            <div class="ai-input-container">
+                <input type="text" class="ai-input" placeholder="Pregúntame algo...">
+                <button class="ai-send-btn">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <button class="fab" id="ai-fab">
+        <i class="fas fa-robot"></i>
+    </button>
+
+    <script src="js/app.js"></script>
+    <script src="js/ai-assistant.js"></script>
+</body>
+</html>
